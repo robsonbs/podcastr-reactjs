@@ -1,7 +1,20 @@
-import { AppProps } from 'next/app'
+import { AppProps } from 'next/app';
+import { Header } from '../components/Header';
+import { Player } from '../components/Player';
+import '../styles/global.scss';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import styles from '../styles/app.module.scss';
+
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+  return (
+    <div className={styles.wrapper}>
+      <main>
+        <Header />
+        <Component {...pageProps} />
+      </main>
+      <Player />
+    </div>
+  );
 }
 
-export default MyApp
+export default MyApp;
