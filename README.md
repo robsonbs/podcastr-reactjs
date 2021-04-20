@@ -21,7 +21,7 @@
 <br>
 
 <p align="center">
-  <img alt="Podcastr" src=".github/icon.svg" width="120px">
+  <img alt="Podcastr" src=".github/icon.svg" width="160px">
 </p>
 
 ## 🧪 Technologies
