@@ -4,6 +4,7 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePlayer } from '../hooks/usePlayer';
 import { api } from '../services/api';
 import { convertDurationToTimeString } from '../utils/convertDurationToTimeString';
 
@@ -30,6 +31,8 @@ export default function Home({
   allEpisodes,
   latestEpisodes,
 }: HomeProps): JSX.Element {
+  const { play } = usePlayer();
+
   return (
     <>
       <Head>
@@ -57,7 +60,7 @@ export default function Home({
                   <span>{episode.publishedAt}</span>
                   <span>{episode.durationAsString}</span>
                 </div>
-                <button type="button">
+                <button type="button" onClick={() => play(episode)}>
                   <img src="/play-green.svg" alt="" />
                 </button>
               </li>
@@ -100,7 +103,7 @@ export default function Home({
                     <td style={{ width: 100 }}>{episode.publishedAt}</td>
                     <td>{episode.durationAsString}</td>
                     <td>
-                      <button type="button">
+                      <button type="button" onClick={() => play(episode)}>
                         <img src="/play-green.svg" alt="Tocar episódio" />
                       </button>
                     </td>
