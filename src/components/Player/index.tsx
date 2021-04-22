@@ -1,8 +1,14 @@
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Slider from 'rc-slider';
 import { usePlayer } from '../../hooks/usePlayer';
+
+import 'rc-slider/assets/index.css';
 import styles from './styles.module.scss';
 
 export function Player(): JSX.Element {
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   const {
     episodeList,
     currentEpisodeIndex,
@@ -10,6 +16,16 @@ export function Player(): JSX.Element {
     togglePlay,
     setPlayingState,
   } = usePlayer();
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+  }, [isPlaying]);
 
   const episode = episodeList[currentEpisodeIndex];
   return (
@@ -39,12 +55,36 @@ export function Player(): JSX.Element {
       <footer className={!episode ? styles.empty : ''}>
         <div className={styles.progress}>
           <span>00:00</span>
-          <div className={styles.slider}>
-            <div className={styles.emptySlider} />
-          </div>
-          <span>00:00</span>
+
+          {episode ? (
+            <>
+              <Slider
+                trackStyle={{ backgroundColor: '#04d361' }}
+                railStyle={{ background: '#9f75ff' }}
+                handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
+              />
+              <span>{episode.durationAsString}</span>
+            </>
+          ) : (
+            <>
+              <div className={styles.slider}>
+                <div className={styles.emptySlider} />
+              </div>
+              <span>00:00</span>
+            </>
+          )}
         </div>
 
+        {episode && (
+          // eslint-disable-next-line jsx-a11y/media-has-caption
+          <audio
+            src={episode.url}
+            ref={audioRef}
+            autoPlay
+            onPlay={() => setPlayingState(true)}
+            onPause={() => setPlayingState(false)}
+          />
+        )}
         <div className={styles.buttons}>
           <button type="button" disabled={!episode}>
             <img src="/shuffle.svg" alt="Embaralhar" />
