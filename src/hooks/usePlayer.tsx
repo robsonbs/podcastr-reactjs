@@ -1,18 +1,10 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { convertDurationToTimeString } from '../utils/convertDurationToTimeString';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 type Episode = {
   title: string;
   members: string;
   thumbnail: string;
   duration: number;
-  durationAsString: string;
   url: string;
 };
 
@@ -20,13 +12,19 @@ type PlayerContextData = {
   episodeList: Array<Episode>;
   currentEpisodeIndex: number;
   isPlaying: boolean;
-  currentTime: number;
-  formattedCurrentTime: string;
-  duration: number;
+  isLooping: boolean;
+  isShuffling: boolean;
+  hasNext: boolean;
+  hasPrevious: boolean;
   play: (episode: Episode) => void;
+  playList: (list: Episode[], index: number) => void;
+  playNext: () => void;
+  playPrev: () => void;
   setPlayingState: (state: boolean) => void;
-  setClickedTime: (time: number) => void;
   togglePlay: () => void;
+  toggleLoop: () => void;
+  toggleShuffle: () => void;
+  clearPlayerState: () => void;
 };
 
 type PlayerProviderProps = {
@@ -39,45 +37,8 @@ export function PlayerProvider({ children }: PlayerProviderProps): JSX.Element {
   const [episodeList, setEpisodeList] = useState([]);
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurTime] = useState(0);
-  const [formattedCurrentTime, setFormattedCurrentTime] = useState('');
-  const [clickedTime, setClickedTime] = useState(0);
-
-  useEffect(() => {
-    const audio = document.querySelector('audio');
-    if (!audio) return;
-    // state setters wrappers
-    const setAudioData = (): void => {
-      setDuration(Math.floor(audio.duration));
-      setCurTime(audio.currentTime);
-    };
-
-    const setAudioTime = (): void => {
-      setCurTime(audio.currentTime);
-      setFormattedCurrentTime(convertDurationToTimeString(audio.currentTime));
-    };
-
-    // DOM listeners: update React state on DOM events
-    audio.addEventListener('loadeddata', setAudioData);
-
-    audio.addEventListener('timeupdate', setAudioTime);
-
-    // React state listeners: update DOM on React state changes
-
-    if (clickedTime && clickedTime !== currentTime) {
-      audio.currentTime = clickedTime;
-      setClickedTime(null);
-    }
-
-    // effect cleanup
-    // eslint-disable-next-line consistent-return
-    return () => {
-      audio.removeEventListener('loadeddata', setAudioData);
-      audio.removeEventListener('timeupdate', setAudioTime);
-    };
-  }, [currentTime, clickedTime, isPlaying]);
+  const [isLooping, setIsLooping] = useState(false);
+  const [isShuffling, setIsShuffling] = useState(false);
 
   function play(episode: Episode): void {
     setEpisodeList([episode]);
@@ -85,12 +46,53 @@ export function PlayerProvider({ children }: PlayerProviderProps): JSX.Element {
     setIsPlaying(true);
   }
 
+  function playList(list: Episode[], index: number): void {
+    setEpisodeList(list);
+    setCurrentEpisodeIndex(index);
+    setIsPlaying(true);
+  }
+
   function togglePlay(): void {
     setIsPlaying(!isPlaying);
   }
 
+  function toggleLoop(): void {
+    setIsLooping(!isLooping);
+  }
+
+  function toggleShuffle(): void {
+    setIsShuffling(!isShuffling);
+  }
+
   function setPlayingState(state: boolean): void {
     setIsPlaying(state);
+  }
+
+  function clearPlayerState(): void {
+    setEpisodeList([]);
+    setCurrentEpisodeIndex(0);
+  }
+
+  const hasPrevious = currentEpisodeIndex > 0;
+
+  const hasNext = isShuffling || currentEpisodeIndex + 1 < episodeList.length;
+
+  function playNext(): void {
+    const nextEpisodeIndex = isShuffling
+      ? Math.floor(Math.random() * episodeList.length) % episodeList.length
+      : currentEpisodeIndex + 1;
+
+    if (nextEpisodeIndex >= episodeList.length) return;
+
+    setCurrentEpisodeIndex(nextEpisodeIndex);
+  }
+
+  function playPrev(): void {
+    const prevEpisodeIndex = currentEpisodeIndex - 1;
+
+    if (prevEpisodeIndex < 0 || episodeList.length === 1) return;
+
+    setCurrentEpisodeIndex(currentEpisodeIndex - 1);
   }
 
   return (
@@ -98,14 +100,20 @@ export function PlayerProvider({ children }: PlayerProviderProps): JSX.Element {
       value={{
         currentEpisodeIndex,
         episodeList,
-        currentTime,
-        formattedCurrentTime,
-        duration,
         isPlaying,
+        isLooping,
+        isShuffling,
+        hasPrevious,
+        hasNext,
         play,
+        playList,
+        playNext,
+        playPrev,
         setPlayingState,
-        setClickedTime,
         togglePlay,
+        toggleLoop,
+        toggleShuffle,
+        clearPlayerState,
       }}>
       {children}
     </PlayerContext.Provider>
