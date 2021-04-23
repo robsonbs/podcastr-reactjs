@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "server": "json-server server.json -w -d 950 -p 3333",
-    "lint": "eslint --fix --ext .ts,.tsx src"
+    "lint": "eslint ./src --fix --ext .ts,.tsx"
   },
   "dependencies": {
     "axios": "^0.21.1",
