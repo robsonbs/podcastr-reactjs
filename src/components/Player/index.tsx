@@ -14,7 +14,11 @@ export function Player(): JSX.Element {
     currentEpisodeIndex,
     isPlaying,
     togglePlay,
+    currentTime,
+    duration,
+    formattedCurrentTime,
     setPlayingState,
+    setClickedTime,
   } = usePlayer();
 
   useEffect(() => {
@@ -54,7 +58,7 @@ export function Player(): JSX.Element {
 
       <footer className={!episode ? styles.empty : ''}>
         <div className={styles.progress}>
-          <span>00:00</span>
+          <span>{formattedCurrentTime || '00:00'}</span>
 
           {episode ? (
             <>
@@ -62,6 +66,9 @@ export function Player(): JSX.Element {
                 trackStyle={{ backgroundColor: '#04d361' }}
                 railStyle={{ background: '#9f75ff' }}
                 handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
+                value={currentTime}
+                max={duration}
+                onChange={setClickedTime}
               />
               <span>{episode.durationAsString}</span>
             </>
