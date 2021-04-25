@@ -4,6 +4,11 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { RichText, Link as PrismicLink } from 'prismic-dom';
+import Prismic from '@prismicio/client';
+
+import { getPrismicClient } from '../services/prismic';
+
 import { usePlayer } from '../hooks/usePlayer';
 import { api } from '../services/api';
 import { convertDurationToTimeString } from '../utils/convertDurationToTimeString';

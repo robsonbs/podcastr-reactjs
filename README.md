@@ -12,8 +12,8 @@
 
 <p align="center">
   <img  src="https://img.shields.io/static/v1?label=license&message=MIT&color=5965E0&labelColor=121214" alt="License">
-  
-  <img src="https://img.shields.io/github/forks/robsonbs/podcastr-reactjs?label=forks&message=MIT&color=5965E0&labelColor=121214" alt="Forks">     
+
+  <img src="https://img.shields.io/github/forks/robsonbs/podcastr-reactjs?label=forks&message=MIT&color=5965E0&labelColor=121214" alt="Forks">
 
   <img src="https://img.shields.io/github/stars/robsonbs/podcastr-reactjs?label=stars&message=MIT&color=5965E0&labelColor=121214" alt="Stars">
 </p>
@@ -51,7 +51,7 @@ $ yarn dev
 
 ## 💻 Project
 
-[Podcastr](https://podcastr-nlw.vercel.app/) to bring you even closer to the best technology podcasts! 💜 
+[Podcastr](https://podcastr-nlw.vercel.app/) to bring you even closer to the best technology podcasts! 💜
 
 This is a project developed during the **[Next Level Week](https://nextlevelweek.com/)**, presented by **[@Rocketseat](https://github.com/Rocketseat)** during April 19-25, 2021.
 
@@ -59,13 +59,13 @@ This is a project developed during the **[Next Level Week](https://nextlevelweek
 
 You can view the project layout through the links below:
 
-- [Layout Web](https://www.figma.com/file/UwFEntsHpHYJlHNQAQr4gA/Podcastr) 
+- [Layout Web](https://www.figma.com/file/UwFEntsHpHYJlHNQAQr4gA/Podcastr)
 
 Remembering that you need to have a [Figma](http://figma.com/) account to access it.
 
 ## 📝 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 
 ---

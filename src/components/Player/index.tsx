@@ -75,8 +75,8 @@ export function Player(): JSX.Element {
             src={episode.thumbnail}
             objectFit="cover"
           />
-          <strong>{episode.title}</strong>
-          <span>{episode.members}</span>
+          <strong title={episode.title}>{episode.title}</strong>
+          <span title={episode.members}>{episode.members}</span>
         </div>
       ) : (
         <div className={styles.emptyPlayer}>
